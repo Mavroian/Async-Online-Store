@@ -39,16 +39,32 @@ class ReviewBuilder {
         if (err) throw err;
       }),
     ]).then(([products, reviews, users]) => {
-      console.log(products);
       products = JSON.parse(products);
       reviews = JSON.parse(reviews);
       users = JSON.parse(users);
-      console.log([products, reviews, users]);
       return produceResult({ products, reviews, users });
     });
   }
 
-  async buildReviewsAsyncAwait() {}
+  async buildReviewsAsyncAwait() {
+    const p = await readFile(
+      "./data/products.json",
+      "utf8",
+      (err, products) => {
+        if (err) throw err;
+      }
+    );
+    const r = await readFile("./data/reviews.json", "utf8", (err, reviews) => {
+      if (err) throw err;
+    });
+    const u = await readFile("./data/users.json", "utf8", (err, users) => {
+      if (err) throw err;
+    });
+    const products = JSON.parse(p);
+    const reviews = JSON.parse(r);
+    const users = JSON.parse(u);
+    return produceResult({ products, reviews, users });
+  }
 }
 
 module.exports = ReviewBuilder;
